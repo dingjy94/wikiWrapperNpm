@@ -1,0 +1,37 @@
+{
+  "name": "wikiwrappernpm",
+  "version": "1.0.0",
+  "description": "javascript promise based wrapper for wikipedia api",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "server": "babel-node ./index.js",
+    "dev": "NODE_ENV=development npm-run-all server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dingjy94/wikiWrapperNpm.git"
+  },
+  "keywords": [
+    "wikipedia"
+  ],
+  "author": "Jingyi Ding",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dingjy94/wikiWrapperNpm/issues"
+  },
+  "homepage": "https://github.com/dingjy94/wikiWrapperNpm#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "npm-run-all": "^4.1.5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/node": "^7.6.1",
+    "@babel/preset-env": "^7.6.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1"
+  }
+}
