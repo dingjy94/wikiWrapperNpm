@@ -3,6 +3,38 @@ import axios from "axios";
 const url = "https://en.wikipedia.org/w/api.php";
 
 /**
+ * Pre-process response, reject warning and error
+ * @param {Object} res: response of wiki api
+ *
+ * @return {Promise}
+ */
+const wikiResponseProcess = (res) => {
+  const data = res.data;
+
+  if (data.error) {
+    return Promise.reject(`Error! ${data.error.info}`);
+  }
+
+  if (data.warnings) {
+    let msg = '';
+    for (let key in data.warnings) {
+      msg += `${key}: `;
+      msg += Object.values(data.warnings[key]).join(' ');
+    }
+
+    return Promise.reject(`Warning! ${msg}`);
+  }
+
+  return Promise.resolve(data);
+}
+
+const onError = function (error) {
+  console.error('Request Failed:', error);
+
+  return Promise.reject(error.response || error.message || error);
+}
+
+/**
  *
  * @param {*} value
  * @param {*} limit
@@ -10,7 +42,7 @@ const url = "https://en.wikipedia.org/w/api.php";
  */
 const search = (value, limit = 20, page = 0) => {
   if (!value) {
-    return Promise.reject(new Error("The search value cannot be empty!"));
+    return Promise.reject("The search value cannot be empty!").catch(onError);
   }
 
   const params = {
@@ -22,8 +54,7 @@ const search = (value, limit = 20, page = 0) => {
     sroffset: page * limit
   };
 
-  const onSuccess = (res) => {
-    const data = res.data;
+  const onSuccess = (data) => {
     const result = {
       search: data.query.search,
       limit: limit,
@@ -35,27 +66,8 @@ const search = (value, limit = 20, page = 0) => {
     return result;
   };
 
-  const onError = function (error) {
-    console.error('Request Failed:', error.config);
-
-    if (error.response) {
-      // Request was made but server responded with something
-      // other than 2xx
-      console.error('Status:', error.response.status);
-      console.error('Data:', error.response.data);
-      console.error('Headers:', error.response.headers);
-
-    } else {
-      // Something else happened while setting up the request
-      // triggered the error
-      console.error('Error Message:', error.message);
-    }
-
-    return Promise.reject(error.response || error.message);
-  }
-
-
   return axios.get(url, { params })
+           .then(wikiResponseProcess)
            .then(onSuccess)
            .catch(onError);
 };

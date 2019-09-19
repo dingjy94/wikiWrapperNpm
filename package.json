@@ -7,7 +7,7 @@
     "start": "node ./index.js",
     "server": "babel-node ./index.js",
     "dev": "NODE_ENV=development npm-run-all server",
-    "test": "jest --coverage && cat ./coverage/lcov.info",
+    "test": "jest --coverage",
     "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
