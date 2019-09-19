@@ -2,6 +2,12 @@ import axios from "axios";
 
 const url = "https://en.wikipedia.org/w/api.php";
 
+/**
+ *
+ * @param {*} value
+ * @param {*} limit
+ * @param {*} page
+ */
 const search = (value, limit = 20, page = 0) => {
   if (!value) {
     return Promise.reject(new Error("The search value cannot be empty!"));
@@ -53,3 +59,9 @@ const search = (value, limit = 20, page = 0) => {
            .then(onSuccess)
            .catch(onError);
 };
+
+const wiki = {
+  search
+};
+
+export default wiki;
